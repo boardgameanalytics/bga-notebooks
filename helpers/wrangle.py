@@ -4,7 +4,7 @@ from category_encoders import OneHotEncoder
 
 
 # Helper function for encoding game classifications
-def _encode_class(df: pd.DataFrame, name: str) -> pd.DataFrame:
+def encode_class(df: pd.DataFrame, name: str) -> pd.DataFrame:
     """Encode game classifications with OHE and groupby game
 
     Args:
@@ -15,7 +15,7 @@ def _encode_class(df: pd.DataFrame, name: str) -> pd.DataFrame:
         Encoded dataframe
     """
     ohe = OneHotEncoder(cols=name, return_df=True)
-    return ohe.fit_transform(df).groupby('GameID').agg(max)
+    return ohe.fit_transform(df).groupby('game_id').agg(max)
 
 
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
@@ -28,6 +28,6 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
         Cleaned dataframe
     """
     # Cutoff releases before 1970
-    df = df.loc[df['ReleaseYear'] < 1950]
+    df = df.loc[df['release_year'] > 1950]
 
     return df
