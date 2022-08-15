@@ -41,4 +41,4 @@ jobs:
         pipenv install --dev --verbose
     - name: Test with pytest
       run: |
-        pipenv run python -m pytest
+        pipenv run pytest
