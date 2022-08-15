@@ -16,12 +16,11 @@ def _setup(db_filepath: str, sql_filepath: str):
     with open(sql_filepath, 'w') as file:
         file.write(query)
     
-    conn = sqlite3.connect(db_filepath)
-    pd.DataFrame({
-        'id': [0, 1, 2, 3, 4],
-        'titles': ['title1', 't2', 't3', 't4', 't5']
-        }).to_sql('test_table', conn, index=None)
-    conn.close()
+    with sqlite3.connect(db_filepath) as conn:
+        pd.DataFrame({
+            'id': [0, 1, 2, 3, 4],
+            'titles': ['title1', 't2', 't3', 't4', 't5']
+            }).to_sql('test_table', conn, index=None)
    
 
 def _teardown(db_file: str, sql_file: str) -> None:
@@ -40,15 +39,14 @@ def test_sql_query() -> None:
     db_filepath = 'test_db.sqlite'
     sql_filepath = 'test_query.sql'
     _setup(db_filepath, sql_filepath)
-    conn = sqlite3.connect(db_filepath)
     
     # Test
-    out_df = sql_query(sql_filepath, conn)
+    with sqlite3.connect(db_filepath) as conn:
+        out_df = sql_query(sql_filepath, conn)
     
     # Verify
     assert isinstance(out_df, pd.DataFrame), 'Did not return DataFrame'
     assert out_df.shape == (2, 2), 'Incorrectly shaped DataFrame returned'
     
     # Teardown
-    conn.close()
     _teardown(db_filepath, sql_filepath)
