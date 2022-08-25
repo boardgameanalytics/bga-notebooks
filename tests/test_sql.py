@@ -3,7 +3,7 @@
 import os
 import sqlite3
 import pandas as pd
-from helpers.sql import sql_query
+from helpers.sql import query
 
 def _setup(db_filepath: str, sql_filepath: str):
     '''Create SQL query file
@@ -42,7 +42,7 @@ def test_sql_query() -> None:
     
     # Test
     with sqlite3.connect(db_filepath) as conn:
-        out_df = sql_query(sql_filepath, conn)
+        out_df = query(sql_filepath, conn)
     
     # Verify
     assert isinstance(out_df, pd.DataFrame), 'Did not return DataFrame'
