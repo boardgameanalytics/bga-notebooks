@@ -9,6 +9,8 @@ sqlalchemy = "*"
 psycopg2-binary = "*"
 category-encoders = "*"
 python-dotenv = "*"
+matplotlib = "*"
+seaborn = "*"
 
 [dev-packages]
 ipykernel = "*"

@@ -1,19 +1,24 @@
 """SQL helper functions"""
 
+from pathlib import Path
 import pandas as pd
 
-def sql_query(filename: str, conn: str) -> pd.DataFrame:
+def query(filepath, conn) -> pd.DataFrame:
     """Load SQL query from .sql file
 
     Args:
-        filename (str): SQL file location
-        conn (str): SQLAlchemy engine to connect with
+        filename (Path): SQL file location
+        conn (Engine): SQLAlchemy engine or connection str to connect with
 
     Returns:
-        pd.DataFrame
+        Pandas DataFrame from the pandas.read_sql_query function running the
+        given sql query.
     """
-    # Open and read the file as a single buffer
-    with open(filename, 'r') as file:
+    # Convert filepath to Path if passed as string
+    if isinstance(filepath, str):
+        filepath = Path(filepath)
+
+    with filepath.open(mode='r') as file:
         query = file.read()
     
     return pd.read_sql_query(query, conn)
