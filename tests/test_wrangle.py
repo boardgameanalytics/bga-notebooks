@@ -1,7 +1,7 @@
 """Pytests for wrangle.py"""
 
 import pandas as pd
-from helpers.wrangle import encode_class, clean_data
+from helpers.wrangle import encode_class
 
 def test_encode_class() -> None:
     """Test for encode_class()
