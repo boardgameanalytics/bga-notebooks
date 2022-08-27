@@ -62,7 +62,7 @@ def add_composite_features(df: pd.DataFrame) -> pd.DataFrame:
     # Save the adjusted metric as a separate column
     df['popularity_adj'] = df.popularity.apply(adjust_pop)
 
-    return df.drop(columns=['popularity'])
+    return df
 
 
 def encode_class(df: pd.DataFrame, name: str) -> pd.DataFrame:
