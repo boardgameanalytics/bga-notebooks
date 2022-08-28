@@ -13,7 +13,8 @@ def test_encode_class() -> None:
     in_df = pd.DataFrame({
         'game_id': [0, 1, 1, 1, 2, 2],
         'mechanic': ['dice', 'auction', 'hand-management', 'bluffing', 'hand-management', 'dice']
-    })
+        })
+    in_df = in_df.set_index('game_id')
     out_df = encode_class(in_df, 'mechanic')
     assert isinstance(out_df, pd.DataFrame), 'Did not return a pandas DataFrame'
     assert out_df.shape == (3, 4), 'Incorrectly shaped DataFrame returned'
