@@ -4,13 +4,14 @@ import pandas as pd
 from category_encoders import OneHotEncoder
 
 
+NEXT_YEAR = 2023
+
 def clean_data(df, threshold: int=None):
     """Clean dataset and add some composite features"""
-    next_year = 2023
     # Drop all releases prior to threshold, and any with a future release_year
     if threshold:
         df = df.loc[df.release_year > threshold]
-    df = df.loc[df.release_year < next_year]
+    df = df.loc[df.release_year < NEXT_YEAR]
     
     # Drop NA equivalent values for release year and weight
     df = df.loc[df.release_year != 0]
@@ -35,14 +36,16 @@ def add_composite_features(df: pd.DataFrame) -> pd.DataFrame:
     Returns:
         DataFrame with engineered features
     """
-    next_year = 2023
+    
+    # Need to remove 'future' entries to prevent div/0 errors
+    df = df.loc[df.release_year < NEXT_YEAR].copy()
     
     # Copies per year (since release) metric
     # Calculate age of game as 'next year' minus release year, so that games
     # just released in the current calendar year are counted as being 1 year
     # old and avoiding division by 0
     df['copies_per_year'] = (df.owned_copies /
-                             (next_year - df.release_year)).astype(int)
+                             (NEXT_YEAR - df.release_year)).astype(int)
 
     # Calculate the unadjusted popularity of a game
     # Since the bayes_rating is pulling the ratings to 5.5 from either
@@ -85,6 +88,7 @@ def encode_class(df: pd.DataFrame, name: str) -> pd.DataFrame:
 
 def reduce_mechanics(mechanic: str) -> str:
     """Combine similiar mechanics to reduce total number of mechanic types"""
+    mechanic = mechanic.lower()
     if 'action' in mechanic:
         return 'action'
     elif 'auction' in mechanic:
