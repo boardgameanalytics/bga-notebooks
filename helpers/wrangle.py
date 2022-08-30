@@ -1,4 +1,5 @@
 """Helper function for data wrangling"""
+import re
 import numpy as np
 import pandas as pd
 from category_encoders import OneHotEncoder
@@ -6,8 +7,15 @@ from category_encoders import OneHotEncoder
 
 NEXT_YEAR = 2023
 
-def clean_data(df, threshold: int=None):
-    """Clean dataset and add some composite features"""
+
+def normalize_str(text: str) -> str:
+    """Normalize str to be lower case, no punctuation, and no spaces"""
+    text = re.sub(r'[:,/.]', '', text)
+    text = re.sub(r'\s+', '-', text.strip())
+    return text.lower()
+
+def clean_game_data(df, threshold: int=None):
+    """Clean games dataset"""
     # Drop all releases prior to threshold, and any with a future release_year
     if threshold:
         df = df.loc[df.release_year > threshold]
