@@ -5,12 +5,14 @@ name = "pypi"
 
 [packages]
 pandas = "*"
+numpy = "*"
 sqlalchemy = "*"
 psycopg2-binary = "*"
 category-encoders = "*"
 python-dotenv = "*"
 matplotlib = "*"
 seaborn = "*"
+jupyter = "*"
 
 [dev-packages]
 ipykernel = "*"

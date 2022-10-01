@@ -2,12 +2,14 @@
 
 from pathlib import Path
 import pandas as pd
+from sqlalchemy.engine import Engine
 
-def query(filepath, conn) -> pd.DataFrame:
+
+def query(filepath: Path, conn: Engine) -> pd.DataFrame:
     """Load SQL query from .sql file
 
     Args:
-        filename (Path): SQL file location
+        filepath (Path): SQL file location
         conn (Engine): SQLAlchemy engine or connection str to connect with
 
     Returns:
@@ -19,6 +21,6 @@ def query(filepath, conn) -> pd.DataFrame:
         filepath = Path(filepath)
 
     with filepath.open(mode='r') as file:
-        query = file.read()
+        sql_query = file.read()
     
-    return pd.read_sql_query(query, conn)
+    return pd.read_sql_query(sql_query, conn)

@@ -14,7 +14,8 @@ def normalize_str(text: str) -> str:
     text = re.sub(r'\s+', '-', text.strip())
     return text.lower()
 
-def clean_game_data(df, threshold: int=None):
+
+def clean_game_data(df, threshold: int = None):
     """Clean games dataset"""
     # Drop all releases prior to threshold, and any with a future release_year
     if threshold:
@@ -81,7 +82,7 @@ def add_composite_features(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def encode_class(df: pd.DataFrame, name: str) -> pd.DataFrame:
-    """Encode game classifications with OHE and groupby game
+    """Encode game classifications with OHE and group by game
 
     Args:
         df (DataFrame): Relational dataframe to encode
@@ -90,12 +91,12 @@ def encode_class(df: pd.DataFrame, name: str) -> pd.DataFrame:
     Returns:
         Encoded dataframe
     """
-    ohe = OneHotEncoder(cols=name, return_df=True, use_cat_names=True)
+    ohe = OneHotEncoder(cols=[name], return_df=True, use_cat_names=True)
     return ohe.fit_transform(df).groupby(df.index.values).agg(max)
 
 
 def reduce_mechanics(mechanic: str) -> str:
-    """Combine similiar mechanics to reduce total number of mechanic types"""
+    """Combine similar mechanics to reduce total number of mechanic types"""
     mechanic = mechanic.lower()
     if 'action' in mechanic:
         return 'action'
